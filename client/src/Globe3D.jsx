@@ -283,10 +283,10 @@ const Globe3D = memo(() => {
 
   return (
     <div
-      ref={mountRef}
-      className="w-full h-full ml-24 cursor-grab active:cursor-grabbing select-none"
-      aria-label="Interactive 3D Earth showing global real estate hotspots"
-    />
+  ref={mountRef}
+  className="w-full h-full scale-75 md:scale-100 ml-0 lg:ml-24 cursor-grab active:cursor-grabbing select-none"
+  aria-label="Interactive 3D Earth showing global real estate hotspots"
+/>
   );
 });
 
