@@ -1,0 +1,9 @@
+/*
+ * app.css
+ * Minimal global styles for TerrAIn landing page.
+ * Philosophy: CSS variables at :root, keyframes only, zero layout overrides.
+ * All layout/spacing/colour work is handled by Tailwind utility classes.
+ */
+
+@import "tailwindcss";
+
