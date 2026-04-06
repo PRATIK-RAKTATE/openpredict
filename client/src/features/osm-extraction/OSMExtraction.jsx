@@ -34,8 +34,8 @@ export default function OSMExtraction() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-sky-500/20 flex items-center justify-center">
-          <Globe2 size={20} className="text-sky-400" />
+        <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+          <Globe2 size={20} className="text-emerald-400" />
         </div>
         <div>
           <h2 className="text-xl font-bold text-white">OSM Data Extraction</h2>
@@ -53,7 +53,7 @@ export default function OSMExtraction() {
             <input
               value={bbox}
               onChange={(e) => setBbox(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-sky-500/50"
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-emerald-500/50"
             />
           </div>
 
@@ -66,14 +66,14 @@ export default function OSMExtraction() {
                   onClick={() => toggle(cat.id)}
                   className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm border transition-all ${
                     selected.has(cat.id)
-                      ? "border-sky-500/60 bg-sky-500/10 text-white"
+                      ? "border-emerald-500/60 bg-emerald-500/10 text-white"
                       : "border-white/10 text-white/40 hover:border-white/20"
                   }`}
                 >
                   <span>{cat.icon}</span>
                   <span className="truncate">{cat.label}</span>
                   {selected.has(cat.id) && (
-                    <span className="ml-auto text-xs text-sky-400">{cat.count}</span>
+                    <span className="ml-auto text-xs text-emerald-400">{cat.count}</span>
                   )}
                 </button>
               ))}
@@ -83,7 +83,7 @@ export default function OSMExtraction() {
           <button
             onClick={handleRun}
             disabled={running}
-            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-sm font-semibold transition-all disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold transition-all disabled:opacity-50"
           >
             {running ? (
               <><RefreshCw size={15} className="animate-spin" /> Extracting…</>
@@ -128,11 +128,11 @@ export default function OSMExtraction() {
                   </div>
                   <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-sky-500 to-blue-600"
+                      className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-green-600"
                       style={{ width: `${r.density}%` }}
                     />
                   </div>
-                  <div className="text-right text-xs text-sky-400 mt-0.5">{r.density}</div>
+                  <div className="text-right text-xs text-emerald-400 mt-0.5">{r.density}</div>
                 </div>
               ))}
             </div>

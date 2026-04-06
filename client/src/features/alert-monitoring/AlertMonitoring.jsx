@@ -25,8 +25,8 @@ export default function AlertMonitoring() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-rose-500/20 flex items-center justify-center">
-          <Bell size={20} className="text-rose-400" />
+        <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+          <Bell size={20} className="text-emerald-400" />
         </div>
         <div className="flex-1">
           <h2 className="text-xl font-bold text-white">Alert & Monitoring System</h2>
@@ -34,7 +34,7 @@ export default function AlertMonitoring() {
         </div>
         <button
           onClick={() => setShowForm((p) => !p)}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-sm font-semibold transition-all"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold transition-all"
         >
           <Plus size={14} /> New Alert
         </button>
@@ -42,7 +42,7 @@ export default function AlertMonitoring() {
 
       {/* New alert form */}
       {showForm && (
-        <div className={`${glass} p-5 border-rose-500/20`}>
+        <div className={`${glass} p-5 border-emerald-500/20`}>
           <h3 className="text-sm font-semibold text-white/70 uppercase tracking-widest mb-4">Create Alert</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
@@ -50,7 +50,7 @@ export default function AlertMonitoring() {
               <select
                 value={form.neighborhood}
                 onChange={(e) => handleChange("neighborhood", e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500/50"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500/50"
               >
                 {["Koregaon Park", "Baner", "Hinjewadi", "Viman Nagar", "Kothrud", "Wagholi"].map((n) => (
                   <option key={n} value={n} className="bg-[#0d1b2a]">{n}</option>
@@ -62,7 +62,7 @@ export default function AlertMonitoring() {
               <select
                 value={form.type}
                 onChange={(e) => handleChange("type", e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500/50"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500/50"
               >
                 {["Price Threshold", "Infrastructure Change", "OSM Change Feed"].map((t) => (
                   <option key={t} value={t} className="bg-[#0d1b2a]">{t}</option>
@@ -75,7 +75,7 @@ export default function AlertMonitoring() {
                 value={form.condition}
                 onChange={(e) => handleChange("condition", e.target.value)}
                 placeholder="e.g. Avg price > ₹10,000/sqft"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500/50"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500/50"
               />
             </div>
             <div>
@@ -87,7 +87,7 @@ export default function AlertMonitoring() {
                     onClick={() => handleChange("channel", c)}
                     className={`flex-1 py-2 rounded-lg text-xs border transition-all capitalize ${
                       form.channel === c
-                        ? "border-rose-500/60 bg-rose-500/10 text-white"
+                        ? "border-emerald-500/60 bg-emerald-500/10 text-white"
                         : "border-white/10 text-white/40"
                     }`}
                   >
@@ -99,7 +99,7 @@ export default function AlertMonitoring() {
           </div>
           <button
             onClick={() => setShowForm(false)}
-            className="mt-4 px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-sm font-semibold transition-all"
+            className="mt-4 px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold transition-all"
           >
             Save Alert
           </button>
@@ -110,7 +110,7 @@ export default function AlertMonitoring() {
         {/* Active alerts */}
         <div className={`${glass} p-5`}>
           <div className="flex items-center gap-2 mb-4">
-            <Bell size={14} className="text-rose-400" />
+            <Bell size={14} className="text-emerald-400" />
             <h3 className="text-sm font-semibold text-white/70 uppercase tracking-widest">Active Alerts</h3>
           </div>
           <div className="space-y-3">

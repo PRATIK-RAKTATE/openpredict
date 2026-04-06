@@ -10,7 +10,7 @@ const glass = "bg-white/5 border border-white/10 backdrop-blur-sm rounded-2xl";
 const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-[#0d1b2a] border border-white/10 rounded-xl p-3 text-xs space-y-1">
+    <div className="bg-[#0d1a0f] border border-white/10 rounded-xl p-3 text-xs space-y-1">
       <p className="text-white/60 mb-1">{label}</p>
       {payload.map((p) => (
         <p key={p.dataKey} style={{ color: p.color }}>
@@ -31,8 +31,8 @@ export default function PricePrediction() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center">
-          <TrendingUp size={20} className="text-indigo-400" />
+        <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+          <TrendingUp size={20} className="text-emerald-400" />
         </div>
         <div>
           <h2 className="text-xl font-bold text-white">Price Trend Prediction</h2>
@@ -50,14 +50,14 @@ export default function PricePrediction() {
               onClick={() => setActiveModel(m.model)}
               className={`p-4 rounded-xl border text-left transition-all ${
                 activeModel === m.model
-                  ? "border-indigo-500/60 bg-indigo-500/10"
+                  ? "border-emerald-500/60 bg-emerald-500/10"
                   : "border-white/5 hover:border-white/15"
               }`}
             >
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-semibold text-white">{m.model}</span>
                 {activeModel === m.model && (
-                  <span className="text-xs bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded-full">Active</span>
+                  <span className="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full">Active</span>
                 )}
               </div>
               <div className="grid grid-cols-3 gap-2 text-xs">
@@ -93,8 +93,8 @@ export default function PricePrediction() {
               <YAxis tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 11 }} />
               <Tooltip content={<CustomTooltip />} />
               <Legend wrapperStyle={{ fontSize: 12, color: "rgba(255,255,255,0.5)" }} />
-              <Line type="monotone" dataKey="actual" stroke="#3b82f6" strokeWidth={2} dot={false} name="Actual" />
-              <Line type="monotone" dataKey={lineKey} stroke="#a78bfa" strokeWidth={2} strokeDasharray="4 2" dot={false} name="Predicted" />
+              <Line type="monotone" dataKey="actual" stroke="#10b981" strokeWidth={2} dot={false} name="Actual" />
+              <Line type="monotone" dataKey={lineKey} stroke="#34d399" strokeWidth={2} strokeDasharray="4 2" dot={false} name="Predicted" />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -111,17 +111,17 @@ export default function PricePrediction() {
                 value={lat}
                 onChange={(e) => setLat(e.target.value)}
                 placeholder="Latitude"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white font-mono focus:outline-none focus:border-indigo-500/50"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500/50"
               />
               <input
                 value={lng}
                 onChange={(e) => setLng(e.target.value)}
                 placeholder="Longitude"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white font-mono focus:outline-none focus:border-indigo-500/50"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-500/50"
               />
-              <div className="bg-indigo-500/10 border border-indigo-500/30 rounded-lg p-3 text-center">
+              <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-3 text-center">
                 <p className="text-xs text-white/40">Estimated Value</p>
-                <p className="text-2xl font-bold text-indigo-300 mt-1">₹8,720<span className="text-base">/sqft</span></p>
+                <p className="text-2xl font-bold text-emerald-300 mt-1">₹8,720<span className="text-base">/sqft</span></p>
               </div>
             </div>
           </div>
@@ -140,7 +140,7 @@ export default function PricePrediction() {
                   </div>
                   <div className="text-sm font-bold text-white">₹{f.mid.toLocaleString()}</div>
                   <div className="text-xs text-white/30">Range: ₹{f.low.toLocaleString()} – ₹{f.high.toLocaleString()}</div>
-                  <div className="text-xs text-indigo-400 mt-1">Confidence: {f.confidence}%</div>
+                  <div className="text-xs text-emerald-400 mt-1">Confidence: {f.confidence}%</div>
                 </div>
               ))}
             </div>

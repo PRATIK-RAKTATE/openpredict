@@ -41,15 +41,15 @@ const buildEarthTexture = () => {
 
   // Deep ocean base
   const ocean = ctx.createLinearGradient(0, 0, 0, 1024);
-  ocean.addColorStop(0,   "#010619");
-  ocean.addColorStop(0.4, "#020e42");
-  ocean.addColorStop(0.6, "#031660");
-  ocean.addColorStop(1,   "#010619");
+  ocean.addColorStop(0,   "#010f07");
+  ocean.addColorStop(0.4, "#021a0d");
+  ocean.addColorStop(0.6, "#032015");
+  ocean.addColorStop(1,   "#010f07");
   ctx.fillStyle = ocean;
   ctx.fillRect(0, 0, 2048, 1024);
 
   // Latitude grid lines
-  ctx.strokeStyle = "rgba(30,110,255,0.12)";
+  ctx.strokeStyle = "rgba(30,180,80,0.12)";
   ctx.lineWidth = 1;
   for (let i = 0; i <= 12; i++) {
     ctx.beginPath();
@@ -76,7 +76,7 @@ const buildEarthTexture = () => {
     { x: 340, y: 110, rx: 60,  ry: 55,  rot: 0.0  },   // Greenland
   ];
 
-  ctx.fillStyle = "rgba(5, 35, 105, 0.88)";
+  ctx.fillStyle = "rgba(5, 55, 28, 0.88)";
   continents.forEach(({ x, y, rx, ry, rot }) => {
     ctx.save();
     ctx.translate(x, y);
@@ -94,9 +94,9 @@ const buildEarthTexture = () => {
   ];
   cities.forEach(([x, y]) => {
     const g = ctx.createRadialGradient(x, y, 0, x, y, 18);
-    g.addColorStop(0, "rgba(56,189,248,0.9)");
-    g.addColorStop(0.3, "rgba(56,189,248,0.3)");
-    g.addColorStop(1, "rgba(56,189,248,0)");
+    g.addColorStop(0, "rgba(52,211,153,0.9)");
+    g.addColorStop(0.3, "rgba(52,211,153,0.3)");
+    g.addColorStop(1, "rgba(52,211,153,0)");
     ctx.fillStyle = g;
     ctx.beginPath();
     ctx.arc(x, y, 18, 0, Math.PI * 2);
@@ -153,8 +153,8 @@ const Globe3D = memo(() => {
       new THREE.MeshPhongMaterial({
         map: buildEarthTexture(),
         shininess: 18,
-        specular: new THREE.Color(0x1a5eb8),
-        emissive: new THREE.Color(0x020c38),
+        specular: new THREE.Color(0x1a7840),
+        emissive: new THREE.Color(0x021008),
         emissiveIntensity: 0.5,
       })
     ));
@@ -163,17 +163,17 @@ const Globe3D = memo(() => {
     g.globeGroup.add(new THREE.Mesh(
       new THREE.SphereGeometry(1.003, 36, 18),
       new THREE.MeshBasicMaterial({
-        color: 0x1e6fff, wireframe: true, transparent: true, opacity: 0.06,
+        color: 0x1ea060, wireframe: true, transparent: true, opacity: 0.06,
       })
     ));
 
     // Layered atmosphere
     [
-  { r: 1.02 + Math.random() * 0.03, o: 0.11, c: 0x003ccc },
-  { r: 1.07 + Math.random() * 0.03, o: 0.085, c: 0x004ae0 },
-  { r: 1.12 + Math.random() * 0.03, o: 0.065, c: 0x0055ff },
-  { r: 1.17 + Math.random() * 0.03, o: 0.045, c: 0x1a7fff },
-  { r: 1.22 + Math.random() * 0.03, o: 0.03, c: 0x3399ff },
+  { r: 1.02 + Math.random() * 0.03, o: 0.11, c: 0x007040 },
+  { r: 1.07 + Math.random() * 0.03, o: 0.085, c: 0x008850 },
+  { r: 1.12 + Math.random() * 0.03, o: 0.065, c: 0x00a060 },
+  { r: 1.17 + Math.random() * 0.03, o: 0.045, c: 0x20b870 },
+  { r: 1.22 + Math.random() * 0.03, o: 0.03, c: 0x40d890 },
 ].forEach(({ r, o, c }) => g.globeGroup.add(makeAtmoShell(r, o, c)));
     // ── Hotspot markers ────────────────────────────────────────────────────
     GLOBE_HOTSPOTS.forEach((spot, i) => {
@@ -182,7 +182,7 @@ const Globe3D = memo(() => {
       // Core dot
       const dot = new THREE.Mesh(
         new THREE.SphereGeometry(0.014, 8, 8),
-        new THREE.MeshBasicMaterial({ color: 0x00e5ff })
+        new THREE.MeshBasicMaterial({ color: 0x00e5a0 })
       );
       dot.position.copy(pos);
       g.globeGroup.add(dot);
@@ -191,7 +191,7 @@ const Globe3D = memo(() => {
       const ring = new THREE.Mesh(
         new THREE.RingGeometry(0.02, 0.036, 24),
         new THREE.MeshBasicMaterial({
-          color: 0x38bdf8, transparent: true, opacity: 0.6, side: THREE.DoubleSide,
+          color: 0x34d399, transparent: true, opacity: 0.6, side: THREE.DoubleSide,
         })
       );
       ring.position.copy(pos);
@@ -209,15 +209,15 @@ const Globe3D = memo(() => {
     starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
     g.scene.add(new THREE.Points(
       starGeo,
-      new THREE.PointsMaterial({ color: 0x7799cc, size: 0.1, transparent: true, opacity: 0.45 })
+      new THREE.PointsMaterial({ color: 0x77aa99, size: 0.1, transparent: true, opacity: 0.45 })
     ));
 
     // ── Lighting ───────────────────────────────────────────────────────────
-    g.scene.add(new THREE.AmbientLight(0x0a1a55, 4));
-    const sun = new THREE.DirectionalLight(0x5599ff, 4.5);
+    g.scene.add(new THREE.AmbientLight(0x0a2015, 4));
+    const sun = new THREE.DirectionalLight(0x55cc88, 4.5);
     sun.position.set(5, 3, 5);
     g.scene.add(sun);
-    const rim = new THREE.DirectionalLight(0x001166, 2);
+    const rim = new THREE.DirectionalLight(0x003322, 2);
     rim.position.set(-4, -2, -4);
     g.scene.add(rim);
 

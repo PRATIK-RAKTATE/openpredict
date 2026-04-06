@@ -10,7 +10,7 @@ const STATUS_STYLES = {
 };
 
 const METHOD_STYLES = {
-  GET: "bg-blue-500/10 text-blue-400 border-blue-500/30",
+  GET: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
   POST: "bg-green-500/10 text-green-400 border-green-500/30",
 };
 
@@ -21,8 +21,8 @@ export default function DataImportExport() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center">
-          <Database size={20} className="text-amber-400" />
+        <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+          <Database size={20} className="text-emerald-400" />
         </div>
         <div>
           <h2 className="text-xl font-bold text-white">Data Import & Export</h2>
@@ -41,7 +41,7 @@ export default function DataImportExport() {
             key={key}
             onClick={() => setActiveTab(key)}
             className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-semibold transition-all ${
-              activeTab === key ? "bg-amber-600 text-white" : "text-white/40 hover:text-white/60"
+              activeTab === key ? "bg-emerald-600 text-white" : "text-white/40 hover:text-white/60"
             }`}
           >
             <Icon size={13} /> {label}
@@ -55,16 +55,16 @@ export default function DataImportExport() {
           {/* Drop zone */}
           <div
             className={`${glass} p-10 flex flex-col items-center justify-center gap-3 border-2 border-dashed transition-all cursor-pointer ${
-              dragging ? "border-amber-500/60 bg-amber-500/5" : "border-white/10 hover:border-white/20"
+              dragging ? "border-emerald-500/60 bg-emerald-500/5" : "border-white/10 hover:border-white/20"
             }`}
             onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
             onDragLeave={() => setDragging(false)}
             onDrop={() => setDragging(false)}
           >
-            <Upload size={32} className={dragging ? "text-amber-400" : "text-white/20"} />
+            <Upload size={32} className={dragging ? "text-emerald-400" : "text-white/20"} />
             <p className="text-white/60 text-sm">Drop CSV or JSON file here</p>
             <p className="text-white/30 text-xs">or</p>
-            <button className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-sm font-semibold transition-all">
+            <button className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold transition-all">
               Browse File
             </button>
             <p className="text-white/25 text-xs mt-1">Supports Zillow, MagicBricks, 99acres formats</p>
@@ -121,7 +121,7 @@ export default function DataImportExport() {
                 <div className="text-xs text-white/50 mt-0.5 mb-3">{t.desc}</div>
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-white/30">{t.size}</span>
-                  <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white text-xs font-semibold transition-all">
+                  <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition-all">
                     <Download size={11} /> Export
                   </button>
                 </div>

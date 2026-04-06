@@ -5,11 +5,11 @@
  * Design: Glassmorphism · Deep Blue · Syne + DM Sans typography
  */
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   TrendingUp, MapPin, BarChart3, Globe2, Search,
-  ChevronRight, Activity, Building2, Layers, Zap,
-  ArrowUpRight, Shield, Cpu, Eye, Menu, X, Bell, Star,
+  ChevronRight, Activity, Building2, Layers,
+  ArrowUpRight, Cpu, Eye, Bell, Star,
 } from "lucide-react";
 import {
   AreaChart, Area, ResponsiveContainer,
@@ -34,42 +34,48 @@ const FEATURES = [
     title: "OpenStreetMap Integration",
     desc: "Real-time OSM data layers map property clusters, zoning boundaries, and urban expansion corridors across 200+ cities.",
     badge: "Live Data",
-    gradient: "from-sky-500 to-blue-600",
+    gradient: "from-emerald-500 to-green-600",
+    navId: "osm",
   },
   {
     icon: Cpu,
     title: "AI Trend Engine",
     desc: "Proprietary ML models analyse 50+ market signals—foot traffic, permit filings, transit proximity—surfacing hotspots months early.",
     badge: "ML Powered",
-    gradient: "from-blue-500 to-indigo-600",
+    gradient: "from-green-500 to-teal-600",
+    navId: "prediction",
   },
   {
     icon: Layers,
     title: "Multi-Layer Analysis",
     desc: "Stack demographic, economic, and geospatial layers into a composite heat map with sub-block precision.",
     badge: "GIS Ready",
-    gradient: "from-cyan-500 to-blue-500",
+    gradient: "from-emerald-400 to-green-500",
+    navId: "landuse",
   },
   {
-    icon: Shield,
-    title: "Risk Scoring",
-    desc: "Confidence intervals and risk matrices cover flood zones, vacancy rates, and regulatory exposure—every signal, fully contextualised.",
+    icon: Building2,
+    title: "Neighborhood Scoring",
+    desc: "Score each neighborhood on transit access, green space, commercial density, and healthcare proximity as a heatmap overlay.",
     badge: "Enterprise",
-    gradient: "from-blue-400 to-violet-500",
+    gradient: "from-green-400 to-teal-500",
+    navId: "neighborhoods",
   },
   {
     icon: Eye,
     title: "Price Prediction",
     desc: "12-month forward models trained on 10 years of transaction data, refreshed weekly with the latest deed recordings.",
     badge: "Forecasting",
-    gradient: "from-sky-400 to-blue-600",
+    gradient: "from-emerald-400 to-green-600",
+    navId: "prediction",
   },
   {
     icon: Bell,
     title: "Real-Time Alerts",
     desc: "Webhook + email alerts the moment a market crosses your custom thresholds: cap rates, DOM velocity, permit clusters.",
     badge: "Instant",
-    gradient: "from-blue-500 to-cyan-400",
+    gradient: "from-green-500 to-emerald-400",
+    navId: "alerts",
   },
 ];
 
@@ -98,18 +104,17 @@ const STEPS = [
   },
 ];
 
-const NAV_LINKS = ["Platform", "Markets", "Pricing", "Docs", "Blog"];
-
 // ─── Reusable primitives ──────────────────────────────────────────────────────
 
 /** Glassmorphism card – the core reusable surface */
-const GlassCard = ({ children, className = "", hover = false }) => (
+const GlassCard = ({ children, className = "", hover = false, onClick }) => (
   <div
+    onClick={onClick}
     className={[
       "rounded-2xl border backdrop-blur-xl",
       "bg-white/[0.04] border-white/[0.08]",
-      "shadow-[0_4px_32px_rgba(0,80,255,0.08)]",
-      hover && "transition-all duration-300 hover:bg-white/[0.07] hover:border-white/[0.14] hover:shadow-[0_8px_48px_rgba(0,120,255,0.15)] hover:-translate-y-1",
+      "shadow-[0_4px_32px_rgba(0,150,70,0.08)]",
+      hover && "transition-all duration-300 hover:bg-white/[0.07] hover:border-white/[0.14] hover:shadow-[0_8px_48px_rgba(0,180,80,0.15)] hover:-translate-y-1",
       className,
     ].filter(Boolean).join(" ")}
   >
@@ -122,7 +127,7 @@ const Badge = ({ children, className = "" }) => (
   <span
     className={[
       "inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-widest uppercase",
-      "bg-sky-500/15 border border-sky-400/25 text-sky-300",
+      "bg-emerald-500/15 border border-emerald-400/25 text-emerald-300",
       className,
     ].join(" ")}
   >
@@ -152,8 +157,8 @@ const StatCounter = ({ value, label, icon: Icon }) => {
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
       ].join(" ")}
     >
-      <div className="w-10 h-10 rounded-xl bg-sky-500/15 border border-sky-400/20 flex items-center justify-center">
-        <Icon size={18} className="text-sky-400" />
+      <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-400/20 flex items-center justify-center">
+        <Icon size={18} className="text-emerald-400" />
       </div>
       <span className="text-3xl font-bold text-white font-display">{value}</span>
       <span className="text-xs text-slate-400 tracking-wider uppercase">{label}</span>
@@ -196,104 +201,15 @@ const ChartTooltip = ({ active, payload, label }) => {
   return (
     <div className="rounded-xl border border-white/10 bg-slate-900/90 backdrop-blur-xl px-4 py-3 text-sm shadow-xl">
       <p className="text-slate-400 text-xs mb-1">{label}</p>
-      <p className="text-sky-300 font-semibold">Index: {payload[0]?.value}</p>
+      <p className="text-emerald-300 font-semibold">Index: {payload[0]?.value}</p>
     </div>
   );
 };
 
 // ─── Section components ───────────────────────────────────────────────────────
 
-const Navbar = () => {
-  const [open, setOpen]       = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  return (
-    <header
-      className={[
-        "fixed top-0 inset-x-0 z-50 transition-all duration-300",
-        scrolled
-          ? "backdrop-blur-2xl bg-slate-950/70 border-b border-white/[0.06] py-3"
-          : "py-5",
-      ].join(" ")}
-    >
-      <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        {/* Logo */}
-        <a href="#" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center shadow-[0_0_16px_rgba(56,189,248,0.5)]">
-            <Globe2 size={16} className="text-white" />
-          </div>
-          <span className="font-display text-lg font-bold text-white tracking-tight">
-            Detect<span className="text-sky-400">Trend AI</span>
-          </span>
-        </a>
-
-        {/* Desktop links */}
-        <ul className="hidden md:flex items-center gap-1">
-          {NAV_LINKS.map(link => (
-            <li key={link}>
-              <a
-                href="#"
-                className="px-4 py-2 rounded-lg text-sm text-slate-400 hover:text-white hover:bg-white/[0.06] transition-all duration-200 font-medium"
-              >
-                {link}
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        {/* CTA */}
-        <div className="hidden md:flex items-center gap-3">
-          <a href="#" className="text-sm text-slate-400 hover:text-white transition-colors font-medium">
-            Sign in
-          </a>
-          <a
-            href="#"
-            className="px-5 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white text-sm font-semibold shadow-[0_4px_20px_rgba(14,165,233,0.35)] hover:shadow-[0_4px_28px_rgba(14,165,233,0.55)] hover:scale-[1.02] transition-all duration-200"
-          >
-            Get Started
-          </a>
-        </div>
-
-        {/* Mobile toggle */}
-        <button
-          className="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.06] transition-all"
-          onClick={() => setOpen(o => !o)}
-          aria-label="Toggle menu"
-        >
-          {open ? <X size={20} /> : <Menu size={20} />}
-        </button>
-      </nav>
-
-      {/* Mobile drawer */}
-      {open && (
-        <div className="md:hidden mx-4 mt-2 rounded-2xl border border-white/[0.08] bg-slate-950/90 backdrop-blur-2xl overflow-hidden">
-          <ul className="p-4 space-y-1">
-            {NAV_LINKS.map(link => (
-              <li key={link}>
-                <a href="#" className="block px-4 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-white/[0.06] transition-all text-sm font-medium">
-                  {link}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <div className="px-4 pb-4 flex flex-col gap-2">
-            <a href="#" className="block text-center px-4 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-white/[0.06] transition-all text-sm font-medium">Sign in</a>
-            <a href="#" className="block text-center px-4 py-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white text-sm font-semibold">Get Started</a>
-          </div>
-        </div>
-      )}
-    </header>
-  );
-};
-
 // ── Hero ─────────────────────────────────────────────────────────────────────
-const HeroSection = () => {
+const HeroSection = ({ onNavigate }) => {
   const [activeSpot, setActiveSpot] = useState(0);
 
   // Cycle through hotspot labels automatically
@@ -303,20 +219,20 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden pt-20">
+    <section className="relative min-h-[calc(100vh-56px)] flex items-center overflow-hidden">
       {/* Background orbs */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-40 -left-40 w-[700px] h-[700px] rounded-full bg-blue-700/20 blur-[120px]" />
-        <div className="absolute top-1/3 right-0 w-[500px] h-[500px] rounded-full bg-sky-600/15 blur-[100px]" />
-        <div className="absolute bottom-0 left-1/3 w-[400px] h-[400px] rounded-full bg-indigo-700/15 blur-[90px]" />
+        <div className="absolute -top-40 -left-40 w-[700px] h-[700px] rounded-full bg-green-700/20 blur-[120px]" />
+        <div className="absolute top-1/3 right-0 w-[500px] h-[500px] rounded-full bg-emerald-600/15 blur-[100px]" />
+        <div className="absolute bottom-0 left-1/3 w-[400px] h-[400px] rounded-full bg-teal-700/15 blur-[90px]" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center w-full">
         {/* Left column */}
         <div className="space-y-8">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-sky-400/25 bg-sky-500/10 backdrop-blur-sm animate-[fadeDown_0.7s_ease_both]">
-            <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
-            <span className="text-sky-300 text-xs font-semibold tracking-wider uppercase">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-400/25 bg-emerald-500/10 backdrop-blur-sm animate-[fadeDown_0.7s_ease_both]">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-emerald-300 text-xs font-semibold tracking-wider uppercase">
               Powered by OpenStreetMap · Live
             </span>
           </div>
@@ -324,10 +240,10 @@ const HeroSection = () => {
           <h1 className="font-display text-5xl xl:text-7xl font-extrabold leading-[1.05] tracking-tight text-white animate-[fadeUp_0.7s_0.1s_ease_both]">
             Detect Real Estate&nbsp;
             <span className="relative">
-              <span className="bg-gradient-to-r from-sky-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-emerald-400 via-green-400 to-emerald-300 bg-clip-text text-transparent">
                 Trends
               </span>
-              <span aria-hidden className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-sky-400 to-cyan-400 opacity-60 rounded-full" />
+              <span aria-hidden className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-emerald-400 to-emerald-300 opacity-60 rounded-full" />
             </span>
             &nbsp;Before the Market Does
           </h1>
@@ -340,7 +256,7 @@ const HeroSection = () => {
           {/* Live hotspot ticker */}
           <div className="flex items-center gap-3 animate-[fadeUp_0.7s_0.3s_ease_both]">
             <GlassCard className="flex items-center gap-3 px-4 py-3">
-              <MapPin size={14} className="text-sky-400 shrink-0" />
+              <MapPin size={14} className="text-emerald-400 shrink-0" />
               <div className="min-w-0">
                 <span className="text-xs text-slate-500 block">Trending now</span>
                 <span className="text-sm font-semibold text-white transition-all duration-500">
@@ -349,7 +265,7 @@ const HeroSection = () => {
               </div>
               <div className="pl-3 border-l border-white/10">
                 <span className="text-xs text-slate-500 block">Avg. price</span>
-                <span className="text-sm font-bold text-sky-300">{GLOBE_HOTSPOTS[activeSpot].price}</span>
+                <span className="text-sm font-bold text-emerald-300">{GLOBE_HOTSPOTS[activeSpot].price}</span>
               </div>
               <div className="pl-3 border-l border-white/10">
                 <span className="text-xs text-slate-500 block">YoY</span>
@@ -360,25 +276,25 @@ const HeroSection = () => {
 
           {/* CTAs */}
           <div className="flex flex-wrap gap-4 animate-[fadeUp_0.7s_0.4s_ease_both]">
-            <a
-              href="#"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold shadow-[0_6px_32px_rgba(14,165,233,0.4)] hover:shadow-[0_8px_48px_rgba(14,165,233,0.6)] hover:scale-[1.02] transition-all duration-200"
+            <button
+              onClick={() => onNavigate?.("osm")}
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold shadow-[0_6px_32px_rgba(16,185,129,0.4)] hover:shadow-[0_8px_48px_rgba(16,185,129,0.6)] hover:scale-[1.02] transition-all duration-200"
             >
               Explore Platform <ArrowUpRight size={16} />
-            </a>
-            <a
-              href="#"
+            </button>
+            <button
+              onClick={() => onNavigate?.("dashboard")}
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-white/[0.1] bg-white/[0.04] backdrop-blur-sm text-white font-semibold hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-200"
             >
-              Watch Demo <ChevronRight size={16} className="text-slate-400" />
-            </a>
+              View Dashboard <ChevronRight size={16} className="text-slate-400" />
+            </button>
           </div>
         </div>
 
         {/* Right column – Globe */}
         <div className="relative h-[520px] lg:h-[640px] animate-[fadeIn_1s_0.3s_ease_both]">
           {/* Glow behind globe */}
-          <div aria-hidden className="absolute inset-0 rounded-full bg-blue-600/15 blur-[80px]" />
+          <div aria-hidden className="absolute inset-0 rounded-full bg-green-600/15 blur-[80px]" />
 
           {/* Globe canvas */}
           <div className="relative w-full h-full">
@@ -396,7 +312,7 @@ const HeroSection = () => {
 
           <GlassCard className="absolute bottom-16 left-0 px-4 py-3 animate-[float_5s_1s_ease-in-out_infinite]">
             <div className="flex items-center gap-2">
-              <BarChart3 size={14} className="text-sky-400" />
+              <BarChart3 size={14} className="text-emerald-400" />
               <span className="text-xs font-semibold text-white">10 Markets Live</span>
             </div>
             <span className="text-[10px] text-slate-500">Drag to explore</span>
@@ -410,8 +326,8 @@ const HeroSection = () => {
 // ── Stats bar ─────────────────────────────────────────────────────────────────
 const StatsBar = () => (
   <section className="relative py-16 overflow-hidden">
-    <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-500/40 to-transparent" />
-    <div aria-hidden className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent" />
+    <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent" />
+    <div aria-hidden className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-green-500/30 to-transparent" />
 
     <div className="max-w-5xl mx-auto px-6">
       <GlassCard className="px-8 py-10">
@@ -426,16 +342,16 @@ const StatsBar = () => (
 );
 
 // ── Features grid ─────────────────────────────────────────────────────────────
-const FeaturesSection = () => (
+const FeaturesSection = ({ onNavigate }) => (
   <section className="relative py-24 overflow-hidden" id="platform">
-    <div aria-hidden className="absolute right-0 top-1/4 w-[600px] h-[600px] rounded-full bg-indigo-700/10 blur-[120px] pointer-events-none" />
+    <div aria-hidden className="absolute right-0 top-1/4 w-[600px] h-[600px] rounded-full bg-teal-700/10 blur-[120px] pointer-events-none" />
 
     <div className="max-w-7xl mx-auto px-6">
       <Reveal className="text-center mb-16 space-y-4">
         <Badge>Platform</Badge>
         <h2 className="font-display text-4xl lg:text-5xl font-bold text-white">
           Everything you need to<br />
-          <span className="bg-gradient-to-r from-sky-400 to-blue-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent">
             lead the market
           </span>
         </h2>
@@ -448,7 +364,11 @@ const FeaturesSection = () => (
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
         {FEATURES.map((feat, i) => (
           <Reveal key={feat.title} delay={i * 80}>
-            <GlassCard hover className="p-6 h-full space-y-4">
+            <GlassCard
+              hover
+              className="p-6 h-full space-y-4 cursor-pointer"
+              onClick={() => onNavigate?.(feat.navId)}
+            >
               <div className="flex items-start justify-between">
                 <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${feat.gradient} flex items-center justify-center shadow-lg`}>
                   <feat.icon size={20} className="text-white" />
@@ -457,6 +377,9 @@ const FeaturesSection = () => (
               </div>
               <h3 className="font-display text-lg font-semibold text-white">{feat.title}</h3>
               <p className="text-slate-400 text-sm leading-relaxed">{feat.desc}</p>
+              <p className="text-xs text-emerald-400 flex items-center gap-1">
+                Open feature <ArrowUpRight size={11} />
+              </p>
             </GlassCard>
           </Reveal>
         ))}
@@ -471,7 +394,7 @@ const TrendSection = () => {
 
   return (
     <section className="py-24 relative overflow-hidden" id="markets">
-      <div aria-hidden className="absolute left-0 top-0 w-[500px] h-[500px] rounded-full bg-sky-600/10 blur-[100px] pointer-events-none" />
+      <div aria-hidden className="absolute left-0 top-0 w-[500px] h-[500px] rounded-full bg-emerald-600/10 blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-[1fr_1.4fr] gap-12 items-center">
         {/* Left */}
@@ -479,7 +402,7 @@ const TrendSection = () => {
           <Badge>Market Intelligence</Badge>
           <h2 className="font-display text-4xl font-bold text-white leading-tight">
             Real-time trend signals,<br />
-            <span className="text-sky-400">visualised instantly</span>
+            <span className="text-emerald-400">visualised instantly</span>
           </h2>
           <p className="text-slate-400 leading-relaxed">
             Our Global Property Index aggregates thousands of data points daily.
@@ -498,7 +421,7 @@ const TrendSection = () => {
                 className={[
                   "px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200",
                   activeMetric === m.key
-                    ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-[0_4px_16px_rgba(14,165,233,0.35)]"
+                    ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-[0_4px_16px_rgba(16,185,129,0.35)]"
                     : "border border-white/[0.08] text-slate-400 hover:text-white hover:bg-white/[0.05]",
                 ].join(" ")}
               >
@@ -511,7 +434,7 @@ const TrendSection = () => {
           <div className="grid grid-cols-2 gap-4">
             {[
               { label: "YTD Growth",    value: "+59.6%", color: "text-emerald-400" },
-              { label: "Peak Month",    value: "Dec",    color: "text-sky-300"     },
+              { label: "Peak Month",    value: "Dec",    color: "text-emerald-300"     },
               { label: "Avg Monthly",   value: "+5.0%",  color: "text-blue-300"    },
               { label: "Markets Live",  value: "10",     color: "text-cyan-300"    },
             ].map(s => (
@@ -537,22 +460,22 @@ const TrendSection = () => {
               <AreaChart data={TREND_DATA} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
                 <defs>
                   <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%"   stopColor="#38bdf8" stopOpacity={0.35} />
-                    <stop offset="100%" stopColor="#38bdf8" stopOpacity={0}    />
+                    <stop offset="0%"   stopColor="#34d399" stopOpacity={0.35} />
+                    <stop offset="100%" stopColor="#34d399" stopOpacity={0}    />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
                 <XAxis dataKey="m" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickLine={false} />
-                <Tooltip content={<ChartTooltip />} cursor={{ stroke: "rgba(56,189,248,0.2)", strokeWidth: 1 }} />
+                <Tooltip content={<ChartTooltip />} cursor={{ stroke: "rgba(52,211,153,0.2)", strokeWidth: 1 }} />
                 <Area
                   type="monotone"
                   dataKey={activeMetric}
-                  stroke="#38bdf8"
+                  stroke="#34d399"
                   strokeWidth={2}
                   fill="url(#chartGrad)"
                   dot={false}
-                  activeDot={{ r: 5, fill: "#38bdf8", stroke: "#0ea5e9", strokeWidth: 2 }}
+                  activeDot={{ r: 5, fill: "#34d399", stroke: "#10b981", strokeWidth: 2 }}
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -566,14 +489,14 @@ const TrendSection = () => {
 // ── OSM Map preview ───────────────────────────────────────────────────────────
 const MapPreviewSection = () => (
   <section className="py-24 relative overflow-hidden">
-    <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-500/30 to-transparent" />
+    <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
 
     <div className="max-w-7xl mx-auto px-6">
       <Reveal className="text-center mb-12 space-y-4">
         <Badge>OpenStreetMap</Badge>
         <h2 className="font-display text-4xl font-bold text-white">
           Sub-block precision,<br />
-          <span className="bg-gradient-to-r from-sky-400 to-cyan-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-emerald-400 to-emerald-300 bg-clip-text text-transparent">
             city-wide coverage
           </span>
         </h2>
@@ -601,16 +524,16 @@ const MapPreviewSection = () => (
           </div>
 
           {/* Map mock canvas */}
-          <div className="relative h-80 bg-gradient-to-br from-slate-950 via-[#020d42] to-slate-900 overflow-hidden">
+          <div className="relative h-80 bg-gradient-to-br from-slate-950 via-[#020f08] to-slate-900 overflow-hidden">
             {/* Grid lines simulating OSM tiles */}
             <svg className="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
-                  <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#1e6fff" strokeWidth="0.5" />
+                  <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#1ea060" strokeWidth="0.5" />
                 </pattern>
                 <pattern id="bigGrid" width="192" height="192" patternUnits="userSpaceOnUse">
                   <rect width="192" height="192" fill="url(#grid)" />
-                  <path d="M 192 0 L 0 0 0 192" fill="none" stroke="#2a7fff" strokeWidth="1" />
+                  <path d="M 192 0 L 0 0 0 192" fill="none" stroke="#2ab870" strokeWidth="1" />
                 </pattern>
               </defs>
               <rect width="100%" height="100%" fill="url(#bigGrid)" />
@@ -618,17 +541,17 @@ const MapPreviewSection = () => (
 
             {/* Simulated road network */}
             <svg className="absolute inset-0 w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
-              <line x1="0"   y1="120" x2="100%" y2="110" stroke="#38bdf8" strokeWidth="2" />
-              <line x1="0"   y1="220" x2="100%" y2="215" stroke="#38bdf8" strokeWidth="1.5" />
-              <line x1="180" y1="0"   x2="175"  y2="100%" stroke="#38bdf8" strokeWidth="2" />
-              <line x1="420" y1="0"   x2="415"  y2="100%" stroke="#38bdf8" strokeWidth="1.5" />
-              <line x1="680" y1="0"   x2="670"  y2="100%" stroke="#38bdf8" strokeWidth="2" />
+              <line x1="0"   y1="120" x2="100%" y2="110" stroke="#34d399" strokeWidth="2" />
+              <line x1="0"   y1="220" x2="100%" y2="215" stroke="#34d399" strokeWidth="1.5" />
+              <line x1="180" y1="0"   x2="175"  y2="100%" stroke="#34d399" strokeWidth="2" />
+              <line x1="420" y1="0"   x2="415"  y2="100%" stroke="#34d399" strokeWidth="1.5" />
+              <line x1="680" y1="0"   x2="670"  y2="100%" stroke="#34d399" strokeWidth="2" />
             </svg>
 
             {/* Heat zones */}
             {[
               { x: "22%", y: "35%", size: 100, opacity: 0.25, color: "#f97316" },
-              { x: "55%", y: "55%", size: 140, opacity: 0.20, color: "#38bdf8" },
+              { x: "55%", y: "55%", size: 140, opacity: 0.20, color: "#34d399" },
               { x: "75%", y: "30%", size: 90,  opacity: 0.22, color: "#a855f7" },
               { x: "40%", y: "70%", size: 80,  opacity: 0.18, color: "#22d3ee" },
             ].map((z, i) => (
@@ -662,7 +585,7 @@ const MapPreviewSection = () => (
                   <p className="text-[10px] text-slate-400">{pin.label}</p>
                   <p className={`text-xs font-bold ${pin.up ? "text-emerald-400" : "text-orange-400"}`}>{pin.value}</p>
                 </GlassCard>
-                <div className="w-2 h-2 rounded-full bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.9)]" />
+                <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
               </div>
             ))}
 
@@ -670,7 +593,7 @@ const MapPreviewSection = () => (
             <div className="absolute top-4 right-4 space-y-2">
               {["Heat Map", "Transactions", "Zoning"].map(layer => (
                 <GlassCard key={layer} className="px-3 py-1.5 flex items-center gap-2 cursor-pointer hover:bg-white/[0.08] transition-colors">
-                  <Layers size={10} className="text-sky-400" />
+                  <Layers size={10} className="text-emerald-400" />
                   <span className="text-[10px] text-slate-300">{layer}</span>
                 </GlassCard>
               ))}
@@ -685,26 +608,26 @@ const MapPreviewSection = () => (
 // ── How it works ──────────────────────────────────────────────────────────────
 const HowItWorksSection = () => (
   <section className="py-24 relative overflow-hidden">
-    <div aria-hidden className="absolute right-0 top-1/3 w-[400px] h-[400px] rounded-full bg-blue-700/12 blur-[100px] pointer-events-none" />
+    <div aria-hidden className="absolute right-0 top-1/3 w-[400px] h-[400px] rounded-full bg-green-700/12 blur-[100px] pointer-events-none" />
 
     <div className="max-w-5xl mx-auto px-6">
       <Reveal className="text-center mb-16 space-y-4">
         <Badge>Getting Started</Badge>
         <h2 className="font-display text-4xl font-bold text-white">
           From data to insight<br />
-          <span className="text-sky-400">in three steps</span>
+          <span className="text-emerald-400">in three steps</span>
         </h2>
       </Reveal>
 
       <div className="relative grid md:grid-cols-3 gap-6">
         {/* Connector line */}
-        <div aria-hidden className="hidden md:block absolute top-10 left-[calc(16.66%+2rem)] right-[calc(16.66%+2rem)] h-px bg-gradient-to-r from-sky-500/60 via-blue-500/40 to-sky-500/60" />
+        <div aria-hidden className="hidden md:block absolute top-10 left-[calc(16.66%+2rem)] right-[calc(16.66%+2rem)] h-px bg-gradient-to-r from-emerald-500/60 via-green-500/40 to-emerald-500/60" />
 
         {STEPS.map((step, i) => (
           <Reveal key={step.num} delay={i * 120}>
             <GlassCard hover className="p-6 space-y-4 text-center">
-              <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-sky-500/20 to-blue-600/20 border border-sky-400/20 flex items-center justify-center">
-                <span className="font-display text-2xl font-black text-sky-400">{step.num}</span>
+              <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-emerald-500/20 to-green-600/20 border border-emerald-400/20 flex items-center justify-center">
+                <span className="font-display text-2xl font-black text-emerald-400">{step.num}</span>
               </div>
               <h3 className="font-display text-lg font-semibold text-white">{step.title}</h3>
               <p className="text-slate-400 text-sm leading-relaxed">{step.desc}</p>
@@ -717,11 +640,11 @@ const HowItWorksSection = () => (
 );
 
 // ── CTA section ───────────────────────────────────────────────────────────────
-const CTASection = () => (
+const CTASection = ({ onNavigate }) => (
   <section className="py-28 relative overflow-hidden">
     <div aria-hidden className="absolute inset-0 pointer-events-none">
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-500/40 to-transparent" />
-      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-blue-600/15 blur-[100px]" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent" />
+      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-green-600/15 blur-[100px]" />
     </div>
 
     <div className="max-w-4xl mx-auto px-6 text-center">
@@ -729,7 +652,7 @@ const CTASection = () => (
         <Badge>Early Access</Badge>
         <h2 className="font-display text-5xl lg:text-6xl font-extrabold text-white leading-tight">
           Ready to invest<br />
-          <span className="bg-gradient-to-r from-sky-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-emerald-400 via-green-400 to-emerald-300 bg-clip-text text-transparent">
             one step ahead?
           </span>
         </h2>
@@ -747,8 +670,11 @@ const CTASection = () => (
               className="bg-transparent text-sm text-white placeholder-slate-500 outline-none flex-1 min-w-0"
             />
           </GlassCard>
-          <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold shadow-[0_6px_32px_rgba(14,165,233,0.4)] hover:shadow-[0_8px_48px_rgba(14,165,233,0.6)] hover:scale-[1.02] transition-all duration-200 whitespace-nowrap">
-            Start Free Trial <ArrowUpRight size={16} />
+          <button
+            onClick={() => onNavigate?.("osm")}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold shadow-[0_6px_32px_rgba(16,185,129,0.4)] hover:shadow-[0_8px_48px_rgba(16,185,129,0.6)] hover:scale-[1.02] transition-all duration-200 whitespace-nowrap"
+          >
+            Explore Platform <ArrowUpRight size={16} />
           </button>
         </div>
 
@@ -765,11 +691,11 @@ const Footer = () => (
   <footer className="border-t border-white/[0.06] py-10">
     <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
       <div className="flex items-center gap-2.5">
-        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center">
+        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center">
           <Globe2 size={14} className="text-white" />
         </div>
         <span className="font-display text-base font-bold text-white">
-          Detect<span className="text-sky-400">Trend AI</span>
+          Detect<span className="text-emerald-400">Trend AI</span>
         </span>
       </div>
       <p className="text-slate-600 text-xs text-center">
@@ -785,7 +711,7 @@ const Footer = () => (
 );
 
 // ─── Root page ────────────────────────────────────────────────────────────────
-export default function LandingPage() {
+export default function LandingPage({ onNavigate }) {
   return (
     <>
       {/* Google Fonts – injected once at root */}
@@ -794,16 +720,15 @@ export default function LandingPage() {
         rel="stylesheet"
       />
 
-      <div className="min-h-screen bg-[#020817] text-white">
-        <Navbar />
+      <div className="min-h-screen bg-[#040f07] text-white">
         <main>
-          <HeroSection />
+          <HeroSection onNavigate={onNavigate} />
           <StatsBar />
-          <FeaturesSection />
+          <FeaturesSection onNavigate={onNavigate} />
           <TrendSection />
           <MapPreviewSection />
           <HowItWorksSection />
-          <CTASection />
+          <CTASection onNavigate={onNavigate} />
         </main>
         <Footer />
       </div>

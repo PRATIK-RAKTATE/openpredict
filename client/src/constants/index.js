@@ -1,14 +1,14 @@
 // ─── Fake / static data for all feature UIs ──────────────────────────────────
 
 export const POI_CATEGORIES = [
-  { id: "schools", label: "Schools", icon: "🏫", count: 142, color: "#3b82f6" },
+  { id: "schools", label: "Schools", icon: "🏫", count: 142, color: "#10b981" },
   { id: "hospitals", label: "Hospitals", icon: "🏥", count: 38, color: "#ef4444" },
   { id: "bus_stops", label: "Bus Stops", icon: "🚌", count: 317, color: "#f59e0b" },
   { id: "restaurants", label: "Restaurants", icon: "🍽️", count: 524, color: "#10b981" },
   { id: "parks", label: "Parks", icon: "🌳", count: 89, color: "#22c55e" },
-  { id: "supermarkets", label: "Supermarkets", icon: "🛒", count: 67, color: "#8b5cf6" },
+  { id: "supermarkets", label: "Supermarkets", icon: "🛒", count: 67, color: "#14b8a6" },
   { id: "gyms", label: "Gyms", icon: "🏋️", count: 43, color: "#ec4899" },
-  { id: "atms", label: "ATMs", icon: "🏧", count: 198, color: "#06b6d4" },
+  { id: "atms", label: "ATMs", icon: "🏧", count: 198, color: "#059669" },
 ];
 
 export const EXTRACTION_LOG = [
@@ -113,7 +113,7 @@ export const NEIGHBORHOODS = [
     commercial: 91,
     healthcare: 85,
     overall: 84,
-    color: "#3b82f6",
+    color: "#10b981",
   },
   {
     name: "Baner",
@@ -122,7 +122,7 @@ export const NEIGHBORHOODS = [
     commercial: 78,
     healthcare: 71,
     overall: 73,
-    color: "#8b5cf6",
+    color: "#14b8a6",
   },
   {
     name: "Hinjewadi",
@@ -158,10 +158,10 @@ export const SCORE_DIMENSIONS = ["transit", "green_space", "commercial", "health
 // ─── Land Use Analysis ────────────────────────────────────────────────────────
 
 export const LAND_USE_ZONES = [
-  { type: "Residential", area_km2: 48.3, percentage: 38, color: "#3b82f6", tag: "landuse=residential" },
+  { type: "Residential", area_km2: 48.3, percentage: 38, color: "#10b981", tag: "landuse=residential" },
   { type: "Commercial", area_km2: 22.1, percentage: 17, color: "#f59e0b", tag: "landuse=commercial" },
   { type: "Industrial", area_km2: 15.7, percentage: 12, color: "#ef4444", tag: "landuse=industrial" },
-  { type: "Mixed-Use", area_km2: 19.4, percentage: 15, color: "#8b5cf6", tag: "landuse=mixed" },
+  { type: "Mixed-Use", area_km2: 19.4, percentage: 15, color: "#14b8a6", tag: "landuse=mixed" },
   { type: "Green / Parks", area_km2: 23.8, percentage: 19, color: "#22c55e", tag: "leisure=park" },
 ];
 

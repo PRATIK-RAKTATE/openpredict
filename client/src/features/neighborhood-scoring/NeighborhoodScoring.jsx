@@ -42,8 +42,8 @@ export default function NeighborhoodScoring() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center">
-          <Building2 size={20} className="text-purple-400" />
+        <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+          <Building2 size={20} className="text-emerald-400" />
         </div>
         <div>
           <h2 className="text-xl font-bold text-white">Neighborhood Scoring</h2>
@@ -61,7 +61,7 @@ export default function NeighborhoodScoring() {
               onClick={() => setSelected(n)}
               className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl border text-left transition-all ${
                 selected.name === n.name
-                  ? "border-purple-500/60 bg-purple-500/10"
+                  ? "border-emerald-500/60 bg-emerald-500/10"
                   : "border-white/5 hover:border-white/15"
               }`}
             >
@@ -82,11 +82,11 @@ export default function NeighborhoodScoring() {
                 <XAxis dataKey="name" tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 10 }} />
                 <YAxis domain={[0, 100]} tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 10 }} />
                 <Tooltip
-                  contentStyle={{ background: "#0d1b2a", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, fontSize: 12 }}
+                  contentStyle={{ background: "#0d1a0f", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, fontSize: 12 }}
                   labelStyle={{ color: "rgba(255,255,255,0.6)" }}
                 />
                 {NEIGHBORHOODS.map((n) => null)}
-                <Bar dataKey="score" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="score" fill="#10b981" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

@@ -4,7 +4,7 @@ import { PROPERTY_SAMPLES, WALKABILITY_BREAKDOWN } from "../../constants";
 
 const glass = "bg-white/5 border border-white/10 backdrop-blur-sm rounded-2xl";
 
-function ScoreRing({ value, label, color = "#3b82f6" }) {
+function ScoreRing({ value, label, color = "#10b981" }) {
   const r = 28;
   const circ = 2 * Math.PI * r;
   const dash = (value / 100) * circ;
@@ -31,8 +31,8 @@ export default function ProximityEngineering() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
-          <MapPin size={20} className="text-blue-400" />
+        <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+          <MapPin size={20} className="text-emerald-400" />
         </div>
         <div>
           <h2 className="text-xl font-bold text-white">Proximity Feature Engineering</h2>
@@ -50,14 +50,14 @@ export default function ProximityEngineering() {
               onClick={() => setSelectedProp(p)}
               className={`w-full text-left p-3 rounded-xl border transition-all ${
                 selectedProp.id === p.id
-                  ? "border-blue-500/60 bg-blue-500/10"
+                  ? "border-emerald-500/60 bg-emerald-500/10"
                   : "border-white/5 hover:border-white/15 bg-white/3"
               }`}
             >
               <div className="text-sm font-medium text-white">{p.id}</div>
               <div className="text-xs text-white/40 mt-0.5 leading-snug">{p.address}</div>
               <div className="flex gap-3 mt-2">
-                <span className="text-xs text-blue-400">Walk {p.walkability}</span>
+                <span className="text-xs text-emerald-400">Walk {p.walkability}</span>
                 <span className="text-xs text-white/30">{p.lat.toFixed(4)}, {p.lng.toFixed(4)}</span>
               </div>
             </button>
@@ -72,7 +72,7 @@ export default function ProximityEngineering() {
               {selectedProp.address}
             </h3>
             <div className="grid grid-cols-4 gap-4 mb-4">
-              <ScoreRing value={selectedProp.walkability} label="Walkability" color="#3b82f6" />
+              <ScoreRing value={selectedProp.walkability} label="Walkability" color="#10b981" />
               <div className={`${glass} rounded-xl p-3 flex flex-col items-center justify-center`}>
                 <Navigation size={16} className="text-amber-400 mb-1" />
                 <span className="text-base font-bold text-white">{selectedProp.nearest_school_m}m</span>
@@ -98,7 +98,7 @@ export default function ProximityEngineering() {
                   <div key={i} className="flex-1 text-center">
                     <div className="h-16 bg-white/5 rounded relative overflow-hidden">
                       <div
-                        className="absolute bottom-0 w-full rounded bg-gradient-to-t from-blue-600 to-blue-400 transition-all duration-500"
+                        className="absolute bottom-0 w-full rounded bg-gradient-to-t from-blue-600 to-emerald-400 transition-all duration-500"
                         style={{ height: `${v * 100}%` }}
                       />
                     </div>
@@ -122,11 +122,11 @@ export default function ProximityEngineering() {
                   <div className="flex items-center gap-2">
                     <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-blue-500 to-indigo-500"
+                        className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"
                         style={{ width: `${w.score}%` }}
                       />
                     </div>
-                    <span className="text-xs text-blue-400 w-6 text-right">{w.score}</span>
+                    <span className="text-xs text-emerald-400 w-6 text-right">{w.score}</span>
                   </div>
                 </div>
               ))}
