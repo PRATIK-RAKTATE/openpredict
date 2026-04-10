@@ -249,7 +249,7 @@ const HeroSection = ({ onNavigate }) => {
           </h1>
 
           <p className="text-lg text-slate-400 leading-relaxed max-w-xl animate-[fadeUp_0.7s_0.2s_ease_both]">
-            DetectTrend fuses OpenStreetMap geospatial layers with AI-driven market signals to surface
+            LandIntel fuses OpenStreetMap geospatial layers with AI-driven market signals to surface
             high-conviction investment opportunities in real time—at sub-block precision.
           </p>
 
@@ -305,7 +305,7 @@ const HeroSection = ({ onNavigate }) => {
           <GlassCard className="absolute top-8 right-0 px-4 py-3 animate-[float_4s_ease-in-out_infinite]">
             <div className="flex items-center gap-2">
               <TrendingUp size={14} className="text-emerald-400" />
-              <span className="text-xs font-semibold text-white">Dubai · +12.1%</span>
+              <span className="text-xs font-semibold text-white">Nashik · +12.1%</span>
             </div>
             <span className="text-[10px] text-slate-500">Highest YoY growth</span>
           </GlassCard>
@@ -512,7 +512,7 @@ const MapPreviewSection = () => (
                   <span key={c} className={`w-3 h-3 rounded-full ${c} opacity-60`} />
                 ))}
               </div>
-              <span className="text-xs text-slate-500">DetectTrend Map — New York City</span>
+              <span className="text-xs text-slate-500">LandIntel Map — New York City</span>
             </div>
             <div className="flex items-center gap-2">
               <GlassCard className="flex items-center gap-2 px-3 py-1.5">
@@ -695,11 +695,11 @@ const Footer = () => (
           <Globe2 size={14} className="text-white" />
         </div>
         <span className="font-display text-base font-bold text-white">
-          Detect<span className="text-emerald-400">Trend AI</span>
+          Land<span className="text-emerald-400">Intel AI</span>
         </span>
       </div>
       <p className="text-slate-600 text-xs text-center">
-        © {new Date().getFullYear()} DetectTrend. Powered by OpenStreetMap contributors.
+        © {new Date().getFullYear()} LandIntel. Powered by OpenStreetMap contributors.
       </p>
       <div className="flex gap-5">
         {["Privacy", "Terms", "API"].map(l => (

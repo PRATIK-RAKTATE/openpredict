@@ -49,7 +49,7 @@ export default function App() {
               <Globe2 size={15} className="text-emerald-400" />
             </div>
             <span className="text-sm font-bold text-white tracking-tight">
-              RealTrend<span className="text-emerald-400 font-mono ml-1">OSM</span>
+              Land Intel<span className="text-emerald-400 font-mono ml-1">OSM</span>
             </span>
           </div>
 
